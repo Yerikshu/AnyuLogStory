@@ -1,6 +1,6 @@
 FROM python:3.6
 
-LABEL maintainer="9ian1i <9ian1itp@gmail.com>"
+LABEL maintainer="treestore@foxmail.com"
 
 RUN mkdir /app
 
