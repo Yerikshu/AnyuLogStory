@@ -3,7 +3,7 @@
 
 
 class ElasticConfig(object):
-    host = "127.0.0.1:9200"
+    host = "127.0.0.1:9201"
     uri = "http://{host}/".format(host=host)
 
     # -----------下方名称默认即可-------------
@@ -19,10 +19,11 @@ class ElasticConfig(object):
 
 
 class MongoConfig(object):
-    host = "127.0.0.1:27017"
+    host = "127.0.0.1:27011"
     user = "WatchAD"
     password = "WatchAD-by-0KEE"
-    uri = "mongodb://{user}:{password}@{host}/".format(host=host, user=user, password=password)
+    uri = "mongodb://{user}:{password}@{host}/".format(
+        host=host, user=user, password=password)
 
     # -----------下方名称默认即可-------------
 
@@ -41,4 +42,4 @@ class MongoConfig(object):
 
 class RedisConfig(object):
     host = "127.0.0.1"
-    port = 6379
+    port = 6371
