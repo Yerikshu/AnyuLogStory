@@ -24,7 +24,8 @@ setting_blueprint = Blueprint(
 def setting(name):
     if request.method == "GET":
         result = Settings().get_setting(name)
-        result = clear_data(result)
+        if(name == 'ldap'):
+            result = clear_data(result)
         return output_success(result)
     elif request.method == "POST":
         post_data = request.get_json()
