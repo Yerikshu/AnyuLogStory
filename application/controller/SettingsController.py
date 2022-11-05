@@ -6,6 +6,7 @@
     设置
 """
 
+from copy import deepcopy
 from ldap3 import Server, Connection, ALL
 from flask import Blueprint, request
 from application.common.common import output_success, output_error
@@ -23,11 +24,21 @@ setting_blueprint = Blueprint(
 def setting(name):
     if request.method == "GET":
         result = Settings().get_setting(name)
+        result = clear_data(result)
         return output_success(result)
     elif request.method == "POST":
         post_data = request.get_json()
         Settings().set_setting(name, post_data["value"])
         return output_success("ok")
+
+
+def clear_data(data):
+    result = deepcopy(data)
+    for key in data.keys():
+        for item in data[key].keys():
+            if item == 'password':
+                del result[key][item]
+    return result
 
 
 @setting_blueprint.route("/test_setting/test_ldap_con", methods=["POST"])
@@ -37,7 +48,8 @@ def test_ldap_con():
     domain = list(setting.keys())[0]
     server = Server(setting[domain]["server"], get_info=ALL)
     try:
-        con = Connection(server, user=setting[domain]["user"], password=setting[domain]["password"], auto_bind=True)
+        Connection(server, user=setting[domain]["user"],
+                   password=setting[domain]["password"], auto_bind=True)
         return output_success("ok")
     except Exception as e:
         return output_error(2, str(e)), 500
