@@ -20,9 +20,12 @@ invasion_blueprint = Blueprint(
 def get_list():
     post_data = request.get_json()
     invasion = Invasion()
-    result = invasion.list(data=post_data)
+    result, total = invasion.list(data=post_data)
 
     return output_json({
         "errno": 0,
-        "data": result
+        "data": result,
+        "pageNo": post_data['pageNo'],
+        "pageSize": post_data['pageSize'],
+        "total": total
     })

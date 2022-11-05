@@ -17,9 +17,11 @@ class Invasion(object):
     def list(self, data: dict) -> list:
         query = {}
         search = self.invasion_mongo.find_all(query)
-        page = data["page"]
-        start = (page - 1) * 10
-        fetcher = search.sort("end_time", -1).skip(start).limit(10)
+        total = self.invasion_mongo.count(query)
+        pageNo = data["pageNo"]
+        pageSize = data["pageSize"]
+        start = (pageNo - 1) * pageSize
+        fetcher = search.sort("end_time", -1).skip(start).limit(pageSize)
 
         result = []
         for each in fetcher:
@@ -27,4 +29,4 @@ class Invasion(object):
             each["end_time"] = datetime_to_utc(each["end_time"])
             each["activity_list"] = self.activity.list_naive(each["_id"])
             result.append(each)
-        return result
+        return result, total
